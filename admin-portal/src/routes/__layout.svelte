@@ -1,7 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import type { Route } from '../types';
-	const routes: Route[] = [{ href: '/dashboard', name: 'Dashboard' }];
+	const routes: Route[] = [
+		{ href: '/home', name: 'Home' },
+		{ href: '/users', name: 'Users' }
+	];
 </script>
 
 {#if $page.path !== '/'}
