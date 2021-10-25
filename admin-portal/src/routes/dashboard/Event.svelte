@@ -4,14 +4,16 @@
 	let isVisible = false;
 </script>
 
-<div class="flex-col bg-white shadow mt-2 p-1 rounded group">
+<div class="flex-col bg-white shadow mt-2 p-1 rounded group cursor-pointer">
 	<div class="flex justify-between">
 		<a href={event.url} title={event.url}>{event.title}</a>
 		<span
 			on:click={() => {
 				isVisible = !isVisible;
 			}}
-			class="bg-blue-400 cursor-pointer p-1 rounded-lg text-white hidden group-hover:block"
+			class="bg-blue-400 cursor-pointer p-1 rounded-lg text-white {isVisible
+				? 'block'
+				: 'hidden group-hover:block'}"
 			>{!isVisible ? 'Set Event Points' : 'Close'}
 		</span>
 	</div>

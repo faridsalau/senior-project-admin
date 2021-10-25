@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import type { Route } from '../types';
-
 	const routes: Route[] = [{ href: '/dashboard', name: 'Dashboard' }];
 </script>
 
@@ -11,8 +10,8 @@
 			<a
 				href={route.href}
 				class="underline px-2"
-				class:text-blue-500={route.href !== $page.path}
-				class:text-gray-400={route.href === $page.path}>{route.name}</a
+				class:text-blue-500={route.href === $page.path}
+				class:text-gray-400={route.href !== $page.path}>{route.name}</a
 			>
 		{/each}
 	</nav>
