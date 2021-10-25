@@ -3,7 +3,10 @@
 	import type { Route } from '../types';
 	const routes: Route[] = [
 		{ href: '/home', name: 'Home' },
-		{ href: '/users', name: 'Users' }
+		{ href: '/users', name: 'Users' },
+		{ href: '/events', name: 'Events' },
+		{ href: '/rewards', name: 'Rewards' },
+		{ href: '/create-admin', name: 'Create Admin' }
 	];
 </script>
 
