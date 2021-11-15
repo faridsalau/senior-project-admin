@@ -17,3 +17,5 @@ export type Event = {
 	month: string;
 	day: number;
 };
+
+export type Status = 'Active' | 'Inactive';
