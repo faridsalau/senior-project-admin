@@ -4,6 +4,7 @@
 	import { fade } from 'svelte/transition';
 	import Event from './Event.svelte';
 	export let events: EventType[];
+	export let loading: boolean;
 </script>
 
 {#if events.length > 0}
@@ -13,7 +14,7 @@
 			<Event {event} />
 		{/each}
 	</div>
-{:else}
+{:else if loading}
 	<div class="flex justify-center m-4">
 		<Circle size="60" color="#c9dcfd" unit="px" />
 	</div>

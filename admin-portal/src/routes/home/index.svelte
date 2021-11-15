@@ -10,12 +10,13 @@
 	import { fetchData } from '../../utils';
 
 	const BASE_URL = 'https://senior-project-backed.herokuapp.com';
-
+	let loading = true;
 	let events: Event[] = [];
 	onMount(async () => {
 		events = await fetchData(BASE_URL + '/api/v1/events');
+		loading = false;
 	});
 </script>
 
-<UpcomingEvents {events} />
+<UpcomingEvents {events} {loading} />
 <CreateReward />

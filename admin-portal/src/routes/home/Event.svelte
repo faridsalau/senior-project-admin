@@ -11,9 +11,8 @@
 			on:click={() => {
 				isVisible = !isVisible;
 			}}
-			class="bg-blue-400 cursor-pointer p-1 rounded-lg text-white {isVisible
-				? 'block'
-				: 'hidden group-hover:block'}"
+			class="bg-blue-400 cursor-pointer rounded-lg text-white"
+			style="padding: 0 .5rem;"
 			>{!isVisible ? 'Set Event Points' : 'Close'}
 		</span>
 	</div>
