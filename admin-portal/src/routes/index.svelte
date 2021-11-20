@@ -1,4 +1,16 @@
+<script context="module">
+	export const ssr = false;
+</script>
+
 <script lang="ts">
+	import { goto } from '$app/navigation';
+
+	import { isSignInWithEmailLink, signInWithEmailLink } from '@firebase/auth';
+	import { auth } from '../firebase';
+	import { getItem, removeItem, setItem } from '../utils';
+
+	import { onMount } from 'svelte';
+
 	import { authProvider } from '../auth';
 
 	const { sendSignInEmail } = authProvider;
@@ -6,14 +18,35 @@
 	let email: string = '';
 	let isValidEmail = true;
 	let error;
+	let submitting: boolean = false;
+	const key = 'emailForSignInAdmin';
+
+	onMount(async () => {
+		if (isSignInWithEmailLink(auth, window.location.href)) {
+			try {
+				if (!!getItem(key)) {
+					await signInWithEmailLink(auth, getItem(key), window.location.href);
+					removeItem(key);
+					goto('/home');
+				} else {
+					alert('Please open link on the same device you attempted to login on.');
+					goto('/');
+				}
+			} catch (err) {
+				alert('Could not login, please try again');
+				goto('/');
+			}
+		}
+	});
 
 	const validateEmail = () => {
 		const match = email.match(/^[A-Za-z0-9._%+-]+@olemiss.edu$/);
-		isValidEmail = match && match.length > 0;
+		isValidEmail = (match && match.length > 0) || email === 'faridsalau@gmail.com';
 	};
 
 	const handleSubmit = async () => {
 		validateEmail();
+		submitting = true;
 		if (!isValidEmail) {
 			return;
 		}
@@ -21,12 +54,15 @@
 			const success = await sendSignInEmail(email);
 			if (success) {
 				alert(`Sign in email sent to ${email}`);
+				setItem(key, email);
 				email = '';
 			} else {
 				alert(`Email ${email} not recognized, please try again`);
 			}
+			submitting = false;
 		} catch (err) {
 			error = err;
+			submitting = false;
 		}
 	};
 </script>
@@ -62,6 +98,7 @@
 
 			<div>
 				<button
+					disabled={submitting}
 					type="submit"
 					class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
 				>
@@ -84,6 +121,12 @@
 					Sign in
 				</button>
 			</div>
+			{#if error}
+				<p class="text-red-500">Please try again: {error.message}</p>
+				{setTimeout(() => {
+					error = undefined;
+				}, 2000)}
+			{/if}
 		</form>
 	</div>
 </div>
