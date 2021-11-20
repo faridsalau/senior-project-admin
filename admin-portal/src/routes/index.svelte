@@ -1,6 +1,11 @@
 <script lang="ts">
 	let email: string = '';
-	let password: string = '';
+	let isValidEmail = true;
+
+	const validateEmail = () => {
+		const match = email.match(/^[A-Za-z0-9._%+-]+@olemiss.edu$/);
+		isValidEmail = match && match.length > 0;
+	};
 </script>
 
 <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -16,6 +21,7 @@
 					<label for="email-address" class="sr-only">Email address</label>
 					<input
 						bind:value={email}
+						on:blur={validateEmail}
 						id="email-address"
 						name="email"
 						type="email"
@@ -25,20 +31,11 @@
 						placeholder="Email address"
 					/>
 				</div>
-				<div>
-					<label for="password" class="sr-only">Password</label>
-					<input
-						bind:value={password}
-						id="password"
-						name="password"
-						type="password"
-						autocomplete="current-password"
-						required
-						class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-						placeholder="Password"
-					/>
-				</div>
 			</div>
+
+			{#if !isValidEmail}
+				<p class="text-red-500">Must be valid olemiss.edu email</p>
+			{/if}
 
 			<div>
 				<button
