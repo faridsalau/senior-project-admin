@@ -1,10 +1,33 @@
 <script lang="ts">
+	import { authProvider } from '../auth';
+
+	const { sendSignInEmail } = authProvider;
+
 	let email: string = '';
 	let isValidEmail = true;
+	let error;
 
 	const validateEmail = () => {
 		const match = email.match(/^[A-Za-z0-9._%+-]+@olemiss.edu$/);
 		isValidEmail = match && match.length > 0;
+	};
+
+	const handleSubmit = async () => {
+		validateEmail();
+		if (!isValidEmail) {
+			return;
+		}
+		try {
+			const success = await sendSignInEmail(email);
+			if (success) {
+				alert(`Sign in email sent to ${email}`);
+				email = '';
+			} else {
+				alert(`Email ${email} not recognized, please try again`);
+			}
+		} catch (err) {
+			error = err;
+		}
 	};
 </script>
 
@@ -15,7 +38,7 @@
 				Sign in to your account
 			</h2>
 		</div>
-		<form class="mt-8 space-y-6">
+		<form class="mt-8 space-y-6" on:submit|preventDefault={handleSubmit}>
 			<div class="rounded-md shadow-sm -space-y-px">
 				<div>
 					<label for="email-address" class="sr-only">Email address</label>
@@ -27,7 +50,7 @@
 						type="email"
 						autocomplete="email"
 						required
-						class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+						class="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
 						placeholder="Email address"
 					/>
 				</div>

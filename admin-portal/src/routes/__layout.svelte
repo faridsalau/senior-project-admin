@@ -1,6 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
+	import useAuthRedirect from '../useAuthRedirect';
 	import type { Route } from '../types';
+	onMount(() => {
+		useAuthRedirect();
+	});
 	const routes: Route[] = [
 		{ href: '/home', name: 'Home' },
 		{ href: '/users', name: 'Users' },
