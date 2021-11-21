@@ -1,13 +1,11 @@
-import { authProvider } from './auth';
-import { get } from 'svelte/store';
 import { goto } from '$app/navigation';
+import type { User } from '@firebase/auth';
 
-const useAuthRedirect = (): void => {
-	const { user } = get(authProvider);
-	const href = window.location.href;
-	if (user && href === '') {
+const useAuthRedirect = (user: User): void => {
+	const pathname = window.location.pathname;
+	if (user && pathname === '/') {
 		goto('/home');
-	} else if (!user && href !== '') {
+	} else if (!user && pathname !== '/') {
 		goto('/');
 	}
 };

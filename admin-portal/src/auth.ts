@@ -4,14 +4,12 @@ import { onAuthStateChanged, sendSignInLinkToEmail } from 'firebase/auth';
 import { auth, db } from './firebase';
 import type { User } from 'firebase/auth';
 import { collection, doc, getDoc, setDoc } from '@firebase/firestore';
+import useAuthRedirect from './useAuthRedirect';
 
 type Auth = {
 	user: User | null;
 	known: boolean;
-	isBrowser: boolean;
 };
-
-const key = 'emailForSignInAdmin';
 
 const actionCodeSettings = {
 	url: 'http://localhost:3000/',
@@ -21,18 +19,17 @@ const actionCodeSettings = {
 const authContext = () => {
 	const { subscribe, set } = writable<Auth>({
 		user: null,
-		known: false,
-		isBrowser: false
+		known: false
 	});
 
 	const listen = async () => {
-		onAuthStateChanged(auth, (user) =>
+		onAuthStateChanged(auth, (user) => {
 			set({
 				user,
-				known: true,
-				isBrowser: true
-			})
-		),
+				known: true
+			});
+			useAuthRedirect(user);
+		}),
 			(err) => console.error(err.message);
 	};
 
@@ -59,7 +56,7 @@ const authContext = () => {
 	if (browser) {
 		listen();
 	} else {
-		set({ user: null, known: true, isBrowser: false });
+		set({ user: null, known: true });
 	}
 
 	return {
