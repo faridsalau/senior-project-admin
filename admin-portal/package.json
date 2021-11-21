@@ -37,6 +37,7 @@
   "type": "module",
   "dependencies": {
     "firebase": "^9.5.0",
+    "object-hash": "^2.2.0",
     "svelte-file-dropzone": "0.0.15",
     "svelte-loading-spinners": "^0.1.7"
   }

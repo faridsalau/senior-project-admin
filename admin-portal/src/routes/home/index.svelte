@@ -13,6 +13,7 @@
 	let loading = true;
 	let events: Event[] = [];
 
+	//TODO: write cronjob that adds events based on hash
 	onMount(async () => {
 		events = await fetchData(BASE_URL + '/api/v1/events');
 		loading = false;
