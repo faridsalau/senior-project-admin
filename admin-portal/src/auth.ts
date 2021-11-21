@@ -80,6 +80,16 @@ const authContext = () => {
 		return await getDocs(collection(db, 'events'));
 	};
 
+	const fetchUsers = async () => {
+		const usersRes = await getDocs(collection(db, 'users'));
+		const users = [];
+		usersRes.forEach((user) => {
+			const name = user.data().firstName + ' ' + user.data().lastName;
+			users.push({ name, email: user.id });
+		});
+		return users;
+	};
+
 	const updateEventPoints = async (id: string, points: number) => {
 		const eventRef = doc(db, 'events', id);
 		const docSnap = await getDoc(eventRef);
@@ -126,6 +136,7 @@ const authContext = () => {
 		createAdminEntry,
 		listen,
 		fetchEvents,
+		fetchUsers,
 		updateEventPoints,
 		createReward
 	};

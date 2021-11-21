@@ -1,19 +1,13 @@
 <script>
+	import { onMount } from 'svelte';
+	import { authProvider } from '../../auth';
 	import User from './User.svelte';
-	const users = [
-		{
-			name: 'Jane Cooper',
-			email: 'jane.cooper@email.com'
-		},
-		{
-			name: 'John Doe',
-			email: 'john.doe@email.com'
-		},
-		{
-			name: 'Brue Lee',
-			email: 'bruce.lee@email.com'
-		}
-	];
+	const { fetchUsers } = authProvider;
+	let users = [];
+
+	onMount(async () => {
+		users = await fetchUsers();
+	});
 
 	let searchTerm = '';
 	$: results = users.filter(
