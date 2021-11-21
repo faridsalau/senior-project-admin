@@ -19,6 +19,7 @@
 		updateEventPoints(event.id, points)
 			.then((success) => {
 				if (success) {
+					initPoints = points;
 					alert(`Points for event ${event.title} updated to ${points}`);
 				} else {
 					alert('Could not update event points, please try again');
