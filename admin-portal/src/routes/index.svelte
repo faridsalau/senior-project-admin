@@ -33,6 +33,7 @@
 					goto('/');
 				}
 			} catch (err) {
+				console.error(err);
 				alert('Could not login, please try again');
 				goto('/');
 			}

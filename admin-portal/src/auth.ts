@@ -62,7 +62,8 @@ const authContext = () => {
 	return {
 		subscribe,
 		sendSignInEmail,
-		createAdminEntry
+		createAdminEntry,
+		listen
 	};
 };
 
