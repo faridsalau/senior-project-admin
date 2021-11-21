@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { Reward } from '../../types';
 	import Dropzone from 'svelte-file-dropzone';
+	import { authProvider } from '../../auth';
+	const { createReward } = authProvider;
 	const maxLength = 100;
 	const accept = ['image/jpeg', 'image/png'];
 
@@ -25,11 +27,52 @@
 		points: '',
 		quantity: ''
 	};
+
+	const rewardHasEmptyValues = () => {
+		let ret = false;
+		Object.values(reward).forEach((value) => {
+			if (value.toString().trim() === '') {
+				console.log('here');
+				ret = true;
+			}
+		});
+		return ret;
+	};
+
+	const handleSubmit = () => {
+		if (reward.redemptionCode.length > 100 || reward.description.length > 100) {
+			return;
+		} else if (rewardHasEmptyValues()) {
+			alert('All fields require a value');
+			return;
+		} else if (parseInt(reward.quantity) > 1000) {
+			alert('Max quantity = 1000');
+			return;
+		}
+		createReward(reward)
+			.then((val) => {
+				if (val === true) {
+					alert(`Reward '${reward.name}'' created`);
+				} else {
+					alert('Something went wrong, please try again');
+				}
+				reward = {
+					name: '',
+					description: '',
+					redemptionCode: '',
+					points: '',
+					quantity: ''
+				};
+			})
+			.catch(() => {
+				alert('Something went wrong, please try again');
+			});
+	};
 </script>
 
 <div class="flex-col justify-center m-12 p-6 shadow rounded">
 	<h1 class="text-3xl text-center">Create Reward</h1>
-	<form on:submit|preventDefault={() => console.log('submitted')}>
+	<form on:submit|preventDefault={handleSubmit}>
 		<input
 			bind:value={reward.name}
 			type="text"
@@ -62,11 +105,15 @@
 		/>
 		<input
 			bind:value={reward.redemptionCode}
+			maxlength={maxLength}
 			type="text"
 			title="Redemption Code"
 			placeholder="Redemption Code"
 			class="focus:outline-none focus:border-b-2 focus:border-blue-500 m-4 w-full"
 		/>
+		{#if reward.redemptionCode.length > 90}
+			<p>{maxLength - reward.redemptionCode.length} characters remaining</p>
+		{/if}
 		<Dropzone multiple={false} {accept} on:drop={handleFileSelect} />
 		<div class="flex justify-end">
 			<button type="submit" class="bg-blue-500 text-white p-2 rounded m-4 ">Create Reward</button>

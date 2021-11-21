@@ -6,6 +6,7 @@ import type { User } from 'firebase/auth';
 import { collection, doc, getDoc, getDocs, setDoc } from '@firebase/firestore';
 import hash from 'object-hash';
 import useAuthRedirect from './useAuthRedirect';
+import type { Reward } from './types';
 
 type Auth = {
 	user: User | null;
@@ -89,6 +90,21 @@ const authContext = () => {
 		return true;
 	};
 
+	// TODO: check if reward exists and update with new values
+	const createReward = async (reward: Reward) => {
+		const id = hash(reward.name.toLowerCase().trim());
+		const rewardsRef = collection(db, 'rewards');
+		try {
+			await setDoc(doc(rewardsRef, id), {
+				id,
+				...reward
+			});
+			return true;
+		} catch {
+			return false;
+		}
+	};
+
 	const sendSignInEmail = async (email: string) => {
 		if (await hasAdminEntry(email)) {
 			await sendSignInLinkToEmail(auth, email, actionCodeSettings);
@@ -110,7 +126,8 @@ const authContext = () => {
 		createAdminEntry,
 		listen,
 		fetchEvents,
-		updateEventPoints
+		updateEventPoints,
+		createReward
 	};
 };
 
