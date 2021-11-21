@@ -3,7 +3,7 @@ import { browser } from '$app/env';
 import { onAuthStateChanged, sendSignInLinkToEmail } from 'firebase/auth';
 import { auth, db } from './firebase';
 import type { User } from 'firebase/auth';
-import { collection, doc, getDoc, setDoc } from '@firebase/firestore';
+import { collection, doc, getDoc, getDocs, setDoc } from '@firebase/firestore';
 import hash from 'object-hash';
 import useAuthRedirect from './useAuthRedirect';
 
@@ -75,6 +75,20 @@ const authContext = () => {
 		return docSnap.exists();
 	};
 
+	const fetchEvents = async () => {
+		return await getDocs(collection(db, 'events'));
+	};
+
+	const updateEventPoints = async (id: string, points: number) => {
+		const eventRef = doc(db, 'events', id);
+		const docSnap = await getDoc(eventRef);
+		if (!docSnap.exists()) {
+			return false;
+		}
+		await setDoc(eventRef, { points }, { merge: true });
+		return true;
+	};
+
 	const sendSignInEmail = async (email: string) => {
 		if (await hasAdminEntry(email)) {
 			await sendSignInLinkToEmail(auth, email, actionCodeSettings);
@@ -94,7 +108,9 @@ const authContext = () => {
 		subscribe,
 		sendSignInEmail,
 		createAdminEntry,
-		listen
+		listen,
+		fetchEvents,
+		updateEventPoints
 	};
 };
 

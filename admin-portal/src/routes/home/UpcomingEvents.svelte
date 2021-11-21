@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { Event as EventType } from '../../types';
+	// import type { Event as EventType } from '../../types';
 	import { Circle } from 'svelte-loading-spinners';
 	import { fade } from 'svelte/transition';
 	import Event from './Event.svelte';
-	export let events: EventType[];
+	export let events: any[];
 	export let loading: boolean;
 </script>
 
