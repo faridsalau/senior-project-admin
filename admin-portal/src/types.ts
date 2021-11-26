@@ -6,7 +6,6 @@ export type Route = {
 export type Reward = {
 	name: string;
 	description: string;
-	redemptionCode: string;
 	points: string;
 	quantity: string;
 };
