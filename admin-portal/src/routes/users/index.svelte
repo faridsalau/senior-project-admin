@@ -19,7 +19,12 @@
 </script>
 
 <div class="flex justify-end w-full mt-2 ">
-	<input bind:value={searchTerm} class="focus:outline-none" type="text" placeholder="Search" />
+	<input
+		bind:value={searchTerm}
+		class="focus:outline-none"
+		type="text"
+		placeholder="Search by users name"
+	/>
 </div>
 
 {#each results as user}
