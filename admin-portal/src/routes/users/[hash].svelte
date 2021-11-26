@@ -42,7 +42,7 @@
 	<div class="flex justify-center items-center m-10">
 		<p class="text-red-500">Could not fetch user, please try again</p>
 	</div>
-{:else}
+{:else if Boolean(events.length)}
 	<div class="flex justify-end w-full mt-2 ">
 		<input
 			bind:value={searchTerm}
@@ -58,4 +58,8 @@
 			<p>Event Date: {event.month} {event.day}</p>
 		</div>
 	{/each}
+{:else}
+	<div class="flex justify-center m-4 bg-gray-200 p-4 rounded-sm">
+		<p>{user.firstName} has not attended any events</p>
+	</div>
 {/if}
