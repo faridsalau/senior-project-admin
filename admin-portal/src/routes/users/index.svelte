@@ -40,6 +40,6 @@
 	</label>
 </div>
 
-{#each results as user, i (user.hash)}
+{#each results as user, _ (user.hash)}
 	<User {src} {user} />
 {/each}
