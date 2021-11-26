@@ -7,6 +7,7 @@ import { collection, doc, getDoc, getDocs, setDoc } from '@firebase/firestore';
 import hash from 'object-hash';
 import useAuthRedirect from './useAuthRedirect';
 import type { Reward } from './types';
+import { query, where } from 'firebase/firestore';
 
 type Auth = {
 	user: User | null;
@@ -88,6 +89,16 @@ const authContext = () => {
 			users.push({ name, email: user.id });
 		});
 		return users;
+	};
+
+	const fetchUser = async (hash: string) => {
+		const usersRef = collection(db, 'users');
+		const q = query(usersRef, where('hash', '==', hash));
+		const data = await getDocs(q);
+		if (!Boolean(data.docs.length)) {
+			return false;
+		}
+		return data.docs[0];
 	};
 
 	const updateEventPoints = async (id: string, points: number) => {

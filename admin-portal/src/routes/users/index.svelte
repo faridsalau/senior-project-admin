@@ -23,5 +23,5 @@
 </div>
 
 {#each results as user}
-	<User {src} name={user.name} email={user.email} />
+	<User {src} {user} />
 {/each}
