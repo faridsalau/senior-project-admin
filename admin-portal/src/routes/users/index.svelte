@@ -28,7 +28,7 @@
 		placeholder={`Search by user's ${searchBy === 1 ? 'name' : 'email'}`}
 	/>
 </div>
-<div class="flex justify-end w-11/12 m-4">
+<div class="flex justify-end m-4">
 	<p class="mr-2">Search By:</p>
 	<label class="mr-2">
 		<input type="radio" bind:group={searchBy} name="searchBy" value={1} />
@@ -40,6 +40,6 @@
 	</label>
 </div>
 
-{#each results as user}
+{#each results as user, i (user.hash)}
 	<User {src} {user} />
 {/each}
