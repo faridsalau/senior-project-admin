@@ -86,7 +86,7 @@ const authContext = () => {
 		const users = [];
 		usersRes.forEach((user) => {
 			const name = user.data().firstName + ' ' + user.data().lastName;
-			users.push({ name, email: user.id });
+			users.push({ name, email: user.id, hash: user.data().hash });
 		});
 		return users;
 	};
@@ -148,6 +148,7 @@ const authContext = () => {
 		listen,
 		fetchEvents,
 		fetchUsers,
+		fetchUser,
 		updateEventPoints,
 		createReward
 	};
