@@ -2,8 +2,6 @@
 	export let src: string;
 	export let user;
 	const href = `/users/${user.hash}`;
-	// import { authProvider } from '../../auth';
-	// const { fetchUser } = authProvider;
 </script>
 
 <div class="bg-gray-100 flex m-4 p-4 rounded">
@@ -16,6 +14,6 @@
 	</div>
 	<div class="flex justify-end w-full">
 		<a {href} class="bg-gray-400 rounded text-white p-2 mr-2">View Details</a>
-		<button type="button" class="bg-red-400 rounded text-white p-2">Delete</button>
+		<!-- <button type="button" class="bg-red-400 rounded text-white p-2">Delete</button> -->
 	</div>
 </div>
