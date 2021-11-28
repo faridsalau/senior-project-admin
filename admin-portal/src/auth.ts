@@ -81,6 +81,10 @@ const authContext = () => {
 		return await getDocs(collection(db, 'events'));
 	};
 
+	const fetchRewards = async () => {
+		return await getDocs(collection(db, 'rewards'));
+	};
+
 	const fetchUsers = async () => {
 		const usersRes = await getDocs(collection(db, 'users'));
 		const users = [];
@@ -163,6 +167,7 @@ const authContext = () => {
 		fetchEvents,
 		fetchUsers,
 		fetchUser,
+		fetchRewards,
 		fetchAttendees,
 		updateEventPoints,
 		createReward
