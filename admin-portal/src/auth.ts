@@ -3,7 +3,7 @@ import { browser } from '$app/env';
 import { onAuthStateChanged, sendSignInLinkToEmail } from 'firebase/auth';
 import { auth, db } from './firebase';
 import type { User } from 'firebase/auth';
-import { collection, doc, getDoc, getDocs, setDoc } from '@firebase/firestore';
+import { collection, deleteDoc, doc, getDoc, getDocs, setDoc } from '@firebase/firestore';
 import hash from 'object-hash';
 import useAuthRedirect from './useAuthRedirect';
 import type { Reward } from './types';
@@ -119,6 +119,14 @@ const authContext = () => {
 		}
 	};
 
+	const deleteReward = async (rewardId: string) => {
+		try {
+			await deleteDoc(doc(db, 'rewards', rewardId));
+		} catch {
+			alert('Something went wrong, please try again');
+		}
+	};
+
 	const updateEventPoints = async (id: string, points: number) => {
 		const eventRef = doc(db, 'events', id);
 		const docSnap = await getDoc(eventRef);
@@ -169,6 +177,7 @@ const authContext = () => {
 		fetchUser,
 		fetchRewards,
 		fetchAttendees,
+		deleteReward,
 		updateEventPoints,
 		createReward
 	};
