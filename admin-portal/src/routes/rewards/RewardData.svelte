@@ -2,14 +2,51 @@
 	import { text } from 'svelte/internal';
 	import type { Status } from '../../types';
 	import { authProvider } from '../../auth';
+	import { isEqual } from 'lodash';
 	export let reward: any;
 	let isOpen = false;
 	let deleted = false;
-	let name = reward.name;
-	let quantity: number = reward.quantity;
-	let points: number = reward.points;
 
-	const { deleteReward } = authProvider;
+	let newReward = {
+		...reward,
+		name: reward.name,
+		quantity: reward.quantity,
+		points: reward.points
+	};
+
+	const rewardHasEmptyValues = () => {
+		let ret = false;
+		Object.values(newReward).forEach((value) => {
+			if (!value || value.toString().trim() === '') {
+				ret = true;
+			}
+		});
+		return ret;
+	};
+
+	const { deleteReward, updateReward } = authProvider;
+	const handleUpdate = () => {
+		if (rewardHasEmptyValues()) {
+			alert('No field can be empty');
+			return;
+		}
+		if (isEqual(reward, newReward)) {
+			return;
+		}
+		updateReward(reward.id, newReward)
+			.then((success) => {
+				if (success) {
+					reward = newReward;
+				} else {
+					alert('Something went wrong, please try again');
+				}
+				isOpen = false;
+			})
+			.catch(() => {
+				alert('Something went wrong, please try again');
+				isOpen = false;
+			});
+	};
 </script>
 
 {#if !deleted}
@@ -52,7 +89,7 @@
 				<div class="flex items-center">
 					<div class="ml-4">
 						<input
-							bind:value={name}
+							bind:value={newReward.name}
 							type="text"
 							class="text-sm  text-gray-600"
 							placeholder="Name"
@@ -64,7 +101,7 @@
 				<div class="flex items-center">
 					<div class="ml-4">
 						<input
-							bind:value={quantity}
+							bind:value={newReward.quantity}
 							type="number"
 							class="text-sm  text-gray-600"
 							placeholder="Quantity"
@@ -76,7 +113,7 @@
 				<div class="flex items-center">
 					<div class="ml-4">
 						<input
-							bind:value={points}
+							bind:value={newReward.points}
 							type="number"
 							class="text-sm  text-gray-600"
 							placeholder="Points needed"
@@ -85,8 +122,10 @@
 				</div>
 			</td>
 			<td>
-				<button type="button" class="text-sm font-medium text-gray-600 bg-gray-200 p-2 rounded-sm"
-					>Update</button
+				<button
+					on:click={handleUpdate}
+					type="button"
+					class="text-sm font-medium text-gray-600 bg-gray-200 p-2 rounded-sm">Update</button
 				>
 			</td>
 			<td />

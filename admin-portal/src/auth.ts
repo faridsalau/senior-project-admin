@@ -137,6 +137,16 @@ const authContext = () => {
 		return true;
 	};
 
+	const updateReward = async (id: string, newData: any) => {
+		const rewardsRef = doc(db, 'rewards', id);
+		const docSnap = await getDoc(rewardsRef);
+		if (!docSnap.exists()) {
+			return false;
+		}
+		await setDoc(rewardsRef, newData, { merge: true });
+		return true;
+	};
+
 	// TODO: check if reward exists and update with new values
 	const createReward = async (reward: Reward) => {
 		const id = hash(reward.name.toLowerCase().trim());
@@ -179,6 +189,7 @@ const authContext = () => {
 		fetchAttendees,
 		deleteReward,
 		updateEventPoints,
+		updateReward,
 		createReward
 	};
 };

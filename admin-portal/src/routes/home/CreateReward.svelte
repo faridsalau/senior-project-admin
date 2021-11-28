@@ -31,7 +31,6 @@
 		let ret = false;
 		Object.values(reward).forEach((value) => {
 			if (value.toString().trim() === '') {
-				console.log('here');
 				ret = true;
 			}
 		});
