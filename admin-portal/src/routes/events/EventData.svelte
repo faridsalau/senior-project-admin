@@ -29,6 +29,10 @@
 	</td>
 	<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> {event.points} </td>
 	<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-		<button type="text" class="text-red-600 hover:text-red-900">Delete</button>
+		<a
+			href={`/events/${event.id}?eventName=${event.title}`}
+			type="text"
+			class="text-gray-600 hover:text-gray-900 bg-gray-200 p-2 rounded-sm">Details</a
+		>
 	</td>
 </tr>

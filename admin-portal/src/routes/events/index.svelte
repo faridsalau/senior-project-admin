@@ -32,6 +32,6 @@
 	</div>
 {:else if !loading}
 	<div class="flex justify-center mt-4 text-gray-600 shadow p-4 bg-gray-100">
-		<p>No upcoming events :)</p>
+		<p>No events found :)</p>
 	</div>
 {/if}

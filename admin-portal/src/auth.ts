@@ -101,6 +101,20 @@ const authContext = () => {
 		return data.docs[0];
 	};
 
+	const fetchAttendees = async (eventId: string) => {
+		try {
+			const usersRef = collection(db, 'users');
+			const q = query(usersRef, where('eventsAttended', 'array-contains', eventId));
+			const data = await getDocs(q);
+			if (!Boolean(data.docs.length)) {
+				return false;
+			}
+			return data.docs;
+		} catch {
+			alert('Something went wrong, please try again');
+		}
+	};
+
 	const updateEventPoints = async (id: string, points: number) => {
 		const eventRef = doc(db, 'events', id);
 		const docSnap = await getDoc(eventRef);
@@ -149,6 +163,7 @@ const authContext = () => {
 		fetchEvents,
 		fetchUsers,
 		fetchUser,
+		fetchAttendees,
 		updateEventPoints,
 		createReward
 	};

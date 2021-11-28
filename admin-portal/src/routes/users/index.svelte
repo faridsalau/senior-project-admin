@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { authProvider } from '../../auth';
-	import User from './User.svelte';
+	import User from '../../components/User.svelte';
 	const { fetchUsers } = authProvider;
 	let users = [];
 	let searchBy = 1;
