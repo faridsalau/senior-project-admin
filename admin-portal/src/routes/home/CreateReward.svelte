@@ -47,6 +47,10 @@
 			alert('Max quantity = 1000');
 			return;
 		}
+		if (+reward.points <= 0) {
+			alert(`Reward points must be a positive value`);
+			return;
+		}
 		createReward(reward)
 			.then((val) => {
 				if (val === true) {

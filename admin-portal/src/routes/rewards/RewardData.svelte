@@ -33,6 +33,10 @@
 		if (isEqual(reward, newReward)) {
 			return;
 		}
+		if (newReward.points <= 0) {
+			alert(`Reward points must be a positive value`);
+			return;
+		}
 		updateReward(reward.id, newReward)
 			.then((success) => {
 				if (success) {
